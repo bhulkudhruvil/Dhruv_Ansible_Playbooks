@@ -37,7 +37,37 @@
           - 80/tcp
           - 3306/tcp
 
+      - name: Reload FirewallD Service
+        systemd:
+         name: firewalld
+         state: reloaded
 
       - name: Install pip mysql module
         pip:
           name: pymysql
+
+      - name: Create Database
+        mysql_db:
+          name: ecomdb
+          state: import
+          target: /tmp/db-load-script.sql
+
+      - name: Add user to database
+        mysql_user:
+          name: ecomdb
+          host: localhost
+          priv: 'ecomdb.*:ALL'
+          password: ecompassword
+          state: present
+
+      - name: Clone the repo
+        git:
+          repo: 'https://github.com/kodekloudhub/learning-app-ecommerce.git'
+          dest: /var/www/html
+
+      - name: Search and Replace
+        replace:
+          path: /var/www/html/index.php
+          regexp: '172.20.1.101'
+          replace: 'localhost'
+          backup: yes
