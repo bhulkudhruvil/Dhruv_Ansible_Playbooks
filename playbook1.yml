@@ -1,0 +1,43 @@
+---
+  - name: dhruv_application_deployment
+    hosts: node2
+    remote_user: admin
+    become: true
+    tasks:
+      - name: Install Firewalld, Mariadb, Httpd, php & python3
+        yum:
+          name:
+            - firewalld
+            - mariadb-server
+            - httpd
+            - php
+            - php-mysqlnd
+            - python3
+            - git
+            - vim
+          state: present
+
+      - name: Enable FirewallD, httpd & Mariadb
+        service:
+          name: "{{ item }}"
+          state: started
+          enabled: yes
+        loop:
+          - firewalld
+          - httpd
+          - mariadb
+
+      - name: Open ports for HTTPD & Mariadb
+        firewalld:
+          port: "{{ item }}"
+          permanent: yes
+          zone: public
+          state: enabled
+        loop:
+          - 80/tcp
+          - 3306/tcp
+
+
+      - name: Install pip mysql module
+        pip:
+          name: pymysql

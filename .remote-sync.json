@@ -1,0 +1,20 @@
+{
+  "logger": {
+    "title": "Remote Sync"
+  },
+  "uploadOnSave": true,
+  "useAtomicWrites": false,
+  "deleteLocal": false,
+  "path": "/Users/dhru4670/Dropbox/Ansible Training/Dhruv_Ansible_Playbooks",
+  "hostname": "172.99.69.18",
+  "port": "22",
+  "target": "/home/ansible/Dhruv_Ansible_Playbooks",
+  "ignore": [
+    ".remote-sync.json",
+    ".git/**"
+  ],
+  "username": "root",
+  "watch": [],
+  "transport": "scp",
+  "keyfile": "/Users/dhru4670/.ssh/id_rsa_another"
+}
